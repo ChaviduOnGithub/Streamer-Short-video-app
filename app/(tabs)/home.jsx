@@ -76,7 +76,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   gradientBackground: {
-    flex: 1, // Ensures gradient covers the whole screen
+    flex: 1, 
   },
   safeArea: {
     flex: 1,
@@ -90,22 +90,22 @@ const styles = StyleSheet.create({
   headerTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Vertically align items
-    marginBottom: 16, // Add space between the top row and search bar
+    alignItems: 'center', 
+    marginBottom: 16,
   },
   welcomeText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff', // White text color
+    color: '#fff', 
   },
   userName: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#f4f4f4', // Slightly lighter text
+    color: '#f4f4f4', 
     marginTop: 5,
   },
   itemContainer: {
-    backgroundColor: '#ffffff', // White background for each item
+    backgroundColor: '#ffffff', 
     padding: 16,
     borderRadius: 8,
     marginVertical: 5,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
-    color: '#333', // Dark gray text
+    color: '#333', 
     fontWeight: '500',
   },
   logo: {

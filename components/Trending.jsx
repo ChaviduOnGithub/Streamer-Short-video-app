@@ -35,16 +35,18 @@ const TrendingItem = ({ activeItem, item }) => {
   let longPressTimeout;
 
   const handlePressIn = () => {
-    // Long press to start the pewview video
+    // Start the timer for a long press
     longPressTimeout = setTimeout(() => {
-      setPlayPreview(true);
-    }, 500); // delay time
+      setPlayPreview(true); // Start preview 
+      // Stop the preview after 2 seconds
+      setTimeout(() => {
+        setPlayPreview(false);
+      }, 3000); // 3 second preview
+    }, 500); // long press delay
   };
 
   const handlePressOut = () => {
-    // Clear the timer and stop the prevewi
-    clearTimeout(longPressTimeout);
-    setPlayPreview(false);
+    clearTimeout(longPressTimeout); // Clear long press timer if released early
   };
 
   return (
@@ -56,8 +58,8 @@ const TrendingItem = ({ activeItem, item }) => {
       <TouchableOpacity
         style={styles.touchable}
         activeOpacity={0.7}
-        onPressIn={handlePressIn} // Start the long press logic
-        onPressOut={handlePressOut} // End the long press logic
+        onPressIn={handlePressIn} // Start the long press 
+        onPressOut={handlePressOut} // End the long press 
       >
         {playPreview ? (
           <Video
@@ -110,7 +112,7 @@ const Trending = ({ posts }) => {
       viewabilityConfig={{
         itemVisiblePercentThreshold: 70,
       }}
-      contentOffset={{ x: 170 }}
+      contentOffset={{ x: 0 }}
     />
   );
 };
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: 208, 
-    height: 288, // 72 * 4
+    height: 288, 
     borderRadius: 33,
     marginVertical: 20,
     overflow: "hidden",
