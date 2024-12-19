@@ -7,38 +7,36 @@ import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
 import { createUser } from '../../lib/appwrite';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const SignUp = () => {
-  const [form, setform] = useState({
-    username:"",
+  const { setUser, setIsLogged } = useGlobalContext();
+
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const submit = async () => {
-  if (!form.username || !form.email || !form.password) {
-    Alert.alert('Error', 'Please fill in all the fields');
-    return;
-  }
-  
-  setIsSubmitting(true);
+    if (form.username === "" || form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
 
-  try {
-    const result = await createUser(form.email, form.password, form.username);
-    console.log('User created:', result); // Debugging log
+    setSubmitting(true);
+    try {
+      const result = await createUser(form.email, form.password, form.username);
+      setUser(result)
+      setIsLogged(true);
 
-    Alert.alert('Success', 'User created successfully!');
-    router.replace('/home');
-  } catch (error) {
-    console.error('Error creating user:', error); // Debugging log
-
-    Alert.alert('Error', error.message || 'Something went wrong!');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -52,20 +50,19 @@ const SignUp = () => {
           <FormField 
             title="Username"
             value={form.username}
-            handleChangeText={(e) => setform({ ...form, username: e })}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
           />
           <FormField 
             title="Email"
             value={form.email}
-            handleChangeText={(e) => setform({ ...form, email: e })}
+            handleChangeText={(e) => setForm({ ...form, email: e })}
             keyboardType="email-address"
           />
           <FormField 
             title="Password"
             value={form.password}
-            handleChangeText={(e) => setform({ ...form, password: e })}
+            handleChangeText={(e) => setForm({ ...form, password: e })}
             keyboardType="default"
-            secureTextEntry={true}
           />
           <CustomButton 
             title="Sign Up"

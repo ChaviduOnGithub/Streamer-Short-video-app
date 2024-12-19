@@ -12,10 +12,13 @@ import "../global.css";
 import { images } from '../constants';
 import CustomButton from '../components/CustomButton';
 import { StatusBar } from 'expo-status-bar';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
+import { useGlobalContext } from '../context/GlobalProvider';
 
 const RootLayout = () => {
   const waveAnimation = useSharedValue(0);
+  const {loading, isLogged} = useGlobalContext();
+
 
   useEffect(() => {
     waveAnimation.value = withRepeat(
@@ -33,6 +36,11 @@ const RootLayout = () => {
       transform: [{ translateY: waveAnimation.value }],
     };
   });
+
+  
+  if (!loading && isLogged) {
+    return <Redirect href="/home" />
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>

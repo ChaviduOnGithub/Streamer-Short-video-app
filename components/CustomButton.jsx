@@ -7,7 +7,7 @@ const CustomButton = ({ title, handlePress, containerStyle, isLoading }) => {
     <View style={[styles.container, containerStyle]}>
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => router.push('/sign-in')}>
+        onPress={handlePress}>
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
     </View>

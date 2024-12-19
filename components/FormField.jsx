@@ -13,9 +13,6 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={[styles.container, otherStyles]}>
-      <Text style={styles.label}>{title}</Text>
-
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
@@ -27,17 +24,10 @@ const FormField = ({
           {...props}
         />
 
-        {title === "Password" && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Image
-              source={!showPassword ? icons.eye : icons.eyeHide}
-              style={styles.icon}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        )}
+        
+        
       </View>
-    </View>
+
   );
 };
 
