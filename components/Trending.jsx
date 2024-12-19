@@ -31,7 +31,21 @@ const zoomOut = {
 };
 
 const TrendingItem = ({ activeItem, item }) => {
-  const [play, setPlay] = useState(false);
+  const [playPreview, setPlayPreview] = useState(false);
+  let longPressTimeout;
+
+  const handlePressIn = () => {
+    // Long press to start the pewview video
+    longPressTimeout = setTimeout(() => {
+      setPlayPreview(true);
+    }, 500); // delay time
+  };
+
+  const handlePressOut = () => {
+    // Clear the timer and stop the prevewi
+    clearTimeout(longPressTimeout);
+    setPlayPreview(false);
+  };
 
   return (
     <Animatable.View
@@ -39,25 +53,21 @@ const TrendingItem = ({ activeItem, item }) => {
       animation={activeItem === item.$id ? zoomIn : zoomOut}
       duration={500}
     >
-      {play ? (
-        <Video
-          source={{ uri: item.video }}
-          style={styles.video}
-          resizeMode={ResizeMode.CONTAIN}
-          useNativeControls
-          shouldPlay
-          onPlaybackStatusUpdate={(status) => {
-            if (status.didJustFinish) {
-              setPlay(false);
-            }
-          }}
-        />
-      ) : (
-        <TouchableOpacity
-          style={styles.touchable}
-          activeOpacity={0.7}
-          onPress={() => setPlay(true)}
-        >
+      <TouchableOpacity
+        style={styles.touchable}
+        activeOpacity={0.7}
+        onPressIn={handlePressIn} // Start the long press logic
+        onPressOut={handlePressOut} // End the long press logic
+      >
+        {playPreview ? (
+          <Video
+            source={{ uri: item.video }}
+            style={styles.imageBackground}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isMuted
+          />
+        ) : (
           <ImageBackground
             source={{
               uri: item.thumbnail,
@@ -65,14 +75,16 @@ const TrendingItem = ({ activeItem, item }) => {
             style={styles.imageBackground}
             resizeMode="cover"
           />
+        )}
 
+        {!playPreview && (
           <Image
             source={icons.play}
             style={styles.playIcon}
             resizeMode="contain"
           />
-        </TouchableOpacity>
-      )}
+        )}
+      </TouchableOpacity>
     </Animatable.View>
   );
 };
@@ -107,9 +119,16 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginRight: 20,
   },
+  Prevideo: {
+    width: 208, 
+    height: 488, 
+    borderRadius: 33,
+    marginTop: 12,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  },
   video: {
-    width: 208, // 52 * 4
-    height: 288, // 72 * 4
+    width: 208, 
+    height: 288,
     borderRadius: 33,
     marginTop: 12,
     backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -120,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageBackground: {
-    width: 208, // 52 * 4
+    width: 208, 
     height: 288, // 72 * 4
     borderRadius: 33,
     marginVertical: 20,
